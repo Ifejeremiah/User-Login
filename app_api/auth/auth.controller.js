@@ -52,7 +52,7 @@ function revokeToken(req, res, next) {
 
   // users can revoke their own tokens and admins can revoke any tokens
   if (!req.user.ownsToken(token) && req.user.role !== Role.Admin) {
-    return errorResponse(res, 'Unauthorized', 401)
+    return errorResponse(res, 'Can not access that resource', 403)
   }
 
   userService.revokeToken({ token, ipAddress })
@@ -63,7 +63,7 @@ function revokeToken(req, res, next) {
 function getRefreshTokens(req, res, next) {
   // users can get their own refresh tokens and admins can get any user's refresh tokens
   if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
-    return errorResponse(res, 'Unauthorized', 401)
+    return errorResponse(res, 'Can not access that resource', 403)
   }
 
   userService.getRefreshTokens(req.params.id)
@@ -79,7 +79,7 @@ function logout(req, res, next) {
 
   // users can logout with their own tokens and admins can logout with any tokens
   if (!req.user.ownsToken(token) && req.user.role !== Role.Admin) {
-    return errorResponse(res, 'Unauthorized', 401)
+    return errorResponse(res, 'Can not access that resource', 403)
   }
 
   userService.logout({ token })

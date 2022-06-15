@@ -56,7 +56,7 @@ async function register({ firstName, lastName, email, password, ipAddress }) {
 
 function generateAccessToken(user) {
   // create a access token that expires in 1min
-  return jwt.sign({ sub: user.id, id: user.id }, secret, { expiresIn: '10sec' });
+  return jwt.sign({ sub: user.id, id: user.id }, secret, { expiresIn: '2m' });
 }
 
 function generateRefreshToken(user, ipAddress) {

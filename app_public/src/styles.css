@@ -1,0 +1,15 @@
+.con-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.message {
+  padding: 12px 24px;
+  background: rgb(224, 55, 55);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 12px 0;
+}

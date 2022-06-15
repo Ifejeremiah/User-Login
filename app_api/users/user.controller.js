@@ -12,7 +12,7 @@ function getAll(req, res, next) {
 
 function getById(req, res, next) {
   if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
-    return error(res, 'Unauthorized', 401)
+    return error(res, 'Can not access resource', 403)
   }
 
   userService.getUserById(req.params.id)

@@ -1,0 +1,21 @@
+<div class="con-main">
+  <form class="border p-5 rounded" [formGroup]="loginForm" (submit)="onSubmit()">
+
+    <div class="message" *ngIf="message">{{message}}</div>
+
+    <p>Do not have an account? <a routerLink="/register">Register</a></p>
+
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Email address</label>
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+        formControlName="email">
+    </div>
+
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Password</label>
+      <input type="password" class="form-control" id="exampleInputPassword1" formControlName="password">
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Submit</button>
+  </form>
+</div>
