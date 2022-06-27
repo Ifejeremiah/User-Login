@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/users.service';
+import { SocialAuthService } from 'angularx-social-login';
 
 @Component({
   selector: 'app-user-list',
@@ -13,7 +14,8 @@ export class UserListComponent {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private title: Title
+    private title: Title,
+    private socialAuthService: SocialAuthService
   ) {
     title.setTitle('Demo - Users')
     this.userService.getUsers().subscribe(data => this.users = data.data)
@@ -21,6 +23,9 @@ export class UserListComponent {
 
   users: any
 
-  doLogout() { this.authService.logout() }
-
+  async doLogout(): Promise<void> {
+    this.authService.logout()
+    await this.socialAuthService.signOut();
+  }
 }
+

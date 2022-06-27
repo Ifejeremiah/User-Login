@@ -11,7 +11,7 @@ import { AdminGuard } from '../guards/admin.guard';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: '', component: UserListComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: '', component: UserListComponent, canActivate: [AuthGuard] },
   { path: 'users/:userid', component: UserDetailsComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' }
 ]

@@ -5,7 +5,7 @@ const { Role } = require('../_config')
 const { authorize } = require('../_middlewares')
 const { getAll, getById } = require('./user.controller')
 
-router.get('/', authorize(Role.Admin), getAll)
+router.get('/', authorize(), getAll)
 
 router.get('/:id', authorize(), getById)
 

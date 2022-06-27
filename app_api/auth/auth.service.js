@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto')
+const { default: axios } = require('axios')
+const queryString = require('query-string')
 
 const { saveUser } = require('../users/user.service')
 const secret = process.env.AUTH_SECRET
@@ -9,6 +11,7 @@ const db = require('../_config/db')
 module.exports = {
   authenticate,
   register,
+  googleAuth,
   refreshToken,
   getRefreshTokens,
   revokeToken,
@@ -45,6 +48,38 @@ async function register({ firstName, lastName, email, password, ipAddress }) {
   const refreshToken = generateRefreshToken(user, ipAddress)
 
   await refreshToken.save();
+
+  // return basic details and tokens
+  return {
+    ...format(user),
+    accessToken,
+    refreshToken: refreshToken.token
+  };
+}
+
+async function googleAuth({ idToken, authToken, ipAddress }) {
+  const url = `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${authToken}`
+  const options = { headers: { Authorization: `Bearer ${idToken}` } }
+
+  const { given_name: firstName,
+    family_name: lastName,
+    email } = await axios.get(url, options)
+      .then((res) => res.data)
+      .catch(error => { throw error })
+
+  let user = await db.User.findOne({ email })
+  let accessToken, refreshToken
+
+  if (user) {
+    accessToken = generateAccessToken(user)
+    refreshToken = generateRefreshToken(user, ipAddress)
+    await refreshToken.save();
+  } else {
+    user = await saveUser({ firstName, lastName, email })
+    accessToken = generateAccessToken(user)
+    refreshToken = generateRefreshToken(user, ipAddress)
+    await refreshToken.save();
+  }
 
   // return basic details and tokens
   return {
@@ -129,6 +164,6 @@ async function logout({ token }) {
 
 // helper function
 function format(body) {
-  const { firstName, lastName, email, role } = body
-  return { firstName, lastName, email, role }
+  const { id, firstName, lastName, email, role } = body
+  return { id, firstName, lastName, email, role }
 }

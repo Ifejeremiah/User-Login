@@ -4,7 +4,7 @@ const schema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   email: { type: String, unique: true, required: true },
-  passwordHash: { type: String, required: true },
+  passwordHash: String,
   role: { type: String, default: 'User' },
 }, { timestamps: true })
 

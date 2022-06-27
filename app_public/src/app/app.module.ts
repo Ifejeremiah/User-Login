@@ -12,6 +12,8 @@ import { appInit } from './config/app.initializer';
 import { jwtIntercept } from './config/jwt.interceptor';
 import { errorIntercept } from './config/error.interceptor';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SocialLoginModule } from 'angularx-social-login';
+import { socialAuth } from './config/social-auth';
 
 @NgModule({
   declarations: [
@@ -24,13 +26,15 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     BrowserModule,
     RouteModule,
-    HttpClientModule, 
-    ReactiveFormsModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    SocialLoginModule
   ],
   providers: [
     appInit,
     jwtIntercept,
-    errorIntercept
+    errorIntercept,
+    socialAuth
   ],
 
   bootstrap: [FrameworkComponent]

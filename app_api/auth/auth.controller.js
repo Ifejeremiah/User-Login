@@ -5,6 +5,7 @@ const { Response: { successResponse, errorResponse } } = require('../_middleware
 module.exports = {
   authenticate,
   register,
+  googleAuth,
   refreshToken,
   revokeToken,
   getRefreshTokens,
@@ -69,6 +70,16 @@ function getRefreshTokens(req, res, next) {
   userService.getRefreshTokens(req.params.id)
     .then(tokens => successResponse(res, 'Fetched refresh tokens', tokens))
     .catch(next);
+}
+
+function googleAuth(req, res, next) {
+  req.body.ipAddress = req.ip
+  userService.googleAuth(req.body)
+    .then(({ refreshToken, ...user }) => {
+      setTokenCookie(res, refreshToken)
+      successResponse(res, 'Google user authenticated successfully', user)
+    })
+    .catch(next)
 }
 
 function logout(req, res, next) {

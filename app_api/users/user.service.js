@@ -18,11 +18,12 @@ async function getUserById(id) {
 }
 
 async function saveUser({ firstName, lastName, email, password }) {
+  console.log(firstName, lastName, email, password )
   return db.User.create({
     firstName,
     lastName,
     email,
-    passwordHash: bcrypt.hashSync(password, 12)
+    passwordHash: password ? bcrypt.hashSync(password, 12) : ''
   });
 }
 

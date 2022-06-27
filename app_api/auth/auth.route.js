@@ -4,7 +4,7 @@ const router = Router()
 const { authorize } = require('../_middlewares')
 
 const {
-  authenticate, register,
+  authenticate, register, googleAuth,
   refreshToken, revokeToken, logout
 } = require('./auth.controller')
 const {
@@ -20,5 +20,7 @@ router.post('/refresh-token', refreshToken)
 router.post('/revoke-token', authorize(), revokeToken)
 
 router.post('/logout', authorize(), logout)
+
+router.post('/google', googleAuth)
 
 module.exports = router

@@ -44,6 +44,15 @@ export class AuthService {
       }))
   }
 
+  googleAuth(body: { authToken: string, idToken: string }): Observable<User> {
+    return this.http.post<any>(`${this.apiBase}/auth/google`, body, { withCredentials: true })
+      .pipe(map(user => {
+        this.userSubject.next(user.data)
+        this.startRefreshTokenTimer()
+        return user
+      }))
+  }
+
   logout(): void {
     this.http.post<any>(`${this.apiBase}/auth/logout`, {}, { withCredentials: true }).subscribe()
     this.stopRefreshTokenTimer()
